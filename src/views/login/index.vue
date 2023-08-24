@@ -53,7 +53,9 @@
               show-password
             />
           </el-form-item>
-          <el-button @click="submitForm('login')">登录</el-button>
+          <el-button :loading="loading" @click="submitForm('login')">
+            登录
+          </el-button>
         </el-form>
       </div>
       <div class="overlay-container">
@@ -78,12 +80,13 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-// import { useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
+import { ElNotification } from 'element-plus'
 //引入用户相关的小仓库
 import useUserStore from '@/store/modules/user'
+import { getTime } from '@/utils/time'
 const userStore = useUserStore()
-// const router = useRouter()
+const $router = useRouter()
 const loginData = ref({
   username: 'kaikai',
   password: '123123',
@@ -93,12 +96,13 @@ const registerData = ref({
   username: '',
   password: '',
 })
+const loading = ref(false)
 
 //获取el-form组件
 let loginForm = ref()
 let registerForm = ref()
 
-const validatePass = (rule, value, callback) => {
+const validatePass = (_rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('账号不能为空'))
   } else if (!value.match(/^[a-zA-Z0-9]{6,10}$/)) {
@@ -107,7 +111,7 @@ const validatePass = (rule, value, callback) => {
     callback()
   }
 }
-const validatePass2 = (rule, value, callback) => {
+const validatePass2 = (_rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('密码不能为空'))
   } else if (!value.match(/^[a-zA-Z0-9]{6,10}$/)) {
@@ -116,28 +120,39 @@ const validatePass2 = (rule, value, callback) => {
     callback()
   }
 }
-const submitForm = async (type) => {
+const submitForm = async (type: string) => {
   const formEl = type == 'login' ? loginForm.value : registerForm.value
   if (!formEl) return
-  console.log(formEl)
-  await formEl.validate((valid) => {
+  await formEl.validate((valid: any) => {
     if (valid) {
-      userStore.userLogin(
-        type == 'login' ? loginData.value : registerData.value,
-      )
-      // .then(() => {
-      //   ElMessage({
-      //     showClose: true,
-      //     message: '注册成功！',
-      //     type: 'success',
-      //   })
-      // })
-      // router.push({ path: '/' })
+      try {
+        loading.value = true
+        userStore.userLogin(
+          type == 'login' ? loginData.value : registerData.value,
+        )
+        ElNotification({
+          type: 'success',
+          title: type == 'login' ? '登录成功' : '注册成功！',
+          message:
+            type == 'login'
+              ? `${getTime()}好，欢迎回来`
+              : `${getTime()}好，欢迎`,
+        })
+        loading.value = false
+        $router.push({ path: '/' })
+      } catch (err) {
+        loading.value = false
+        ElNotification({
+          type: 'error',
+          title: type == 'login' ? '登录成功' : '注册成功！',
+          message: (err as Error).message,
+        })
+      }
     } else {
-      ElMessage({
-        showClose: true,
+      ElNotification({
+        type: 'error',
+        title: '提示信息',
         message: '请填写正确信息',
-        type: 'warning',
       })
     }
   })
@@ -163,18 +178,20 @@ onMounted(() => {
   const signInButton = document.getElementById('signIn')
   const container = document.getElementsByClassName('container')[0]
 
-  signUpButton.addEventListener('click', () => {
-    loginData.value.username = ''
-    loginData.value.password = ''
-    container.classList.add('right-panel-active')
-  })
+  signUpButton &&
+    signUpButton.addEventListener('click', () => {
+      loginData.value.username = ''
+      loginData.value.password = ''
+      container.classList.add('right-panel-active')
+    })
 
-  signInButton.addEventListener('click', () => {
-    registerData.value.nickname = ''
-    registerData.value.username = ''
-    registerData.value.password = ''
-    container.classList.remove('right-panel-active')
-  })
+  signInButton &&
+    signInButton.addEventListener('click', () => {
+      registerData.value.nickname = ''
+      registerData.value.username = ''
+      registerData.value.password = ''
+      container.classList.remove('right-panel-active')
+    })
 })
 </script>
 
