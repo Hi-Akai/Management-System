@@ -244,7 +244,7 @@ button.ghost {
 .form-title {
   font-size: 20px;
   font-weight: 600;
-  color: $font_base_color;
+  color: $base_font_color;
 }
 
 .container {
