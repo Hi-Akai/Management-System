@@ -1,7 +1,17 @@
 <template>
   <div class="layout_container">
     <div class="layout_slider">
-      <Logo></Logo>
+      <LogoComp></LogoComp>
+      <el-scrollbar class="scrollbar">
+        <el-menu
+          background-color="#001529"
+          text-color="white"
+          active-text-color="yellowgreen"
+        >
+          <!--根据路由动态生成菜单-->
+          <MenuComp :menuList="userStore.menuRoutes"></MenuComp>
+        </el-menu>
+      </el-scrollbar>
     </div>
     <div class="layout_tabbar">顶部菜单栏</div>
     <div class="layout_main">主要内容</div>
@@ -9,7 +19,10 @@
 </template>
 
 <script setup lang="ts">
-import Logo from './logo/index.vue'
+import LogoComp from './LogoComp/index.vue'
+import MenuComp from './MenuComp/index.vue'
+import useUserStore from '@/store/modules/user'
+let userStore = useUserStore()
 </script>
 
 <style scoped lang="scss">
@@ -23,6 +36,15 @@ import Logo from './logo/index.vue'
     height: 100vh;
     background: $base_menu_background;
     transition: all 0.3s;
+
+    .scrollbar {
+      width: 100%;
+      height: calc(100vh - $base_menu_logo_height);
+
+      .el-menu {
+        border-right: none;
+      }
+    }
   }
 
   .layout_tabbar {
