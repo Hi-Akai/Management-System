@@ -34,7 +34,6 @@ const userStore = useUserStore()
  * 全屏
  */
 const fullScreen = () => {
-  console.log(userStore.username)
   //DOM对象的一个属性：可以用来判断当前是不是全屏模式【全屏：true】
   let full = document.fullscreenElement
   if (!full) {
@@ -51,7 +50,6 @@ const fullScreen = () => {
  */
 const logout = () => {
   userStore.userLogout()
-  console.log($route.path)
   $router.push({ path: '/login', query: { redirect: $route.path } })
 }
 </script>

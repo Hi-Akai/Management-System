@@ -28,8 +28,6 @@ import { useRoute } from 'vue-router'
 
 const layoutSetStore = useLayoutSetStore()
 const $route = useRoute()
-console.log($route)
-
 const changeFold = () => {
   layoutSetStore.changeFold()
 }
