@@ -62,9 +62,16 @@ const goRoute = (vc: any) => {
 
 <script lang="ts">
 export default {
-  //为了使递归组件生效
+  //为了使递归组件生效,并且在浏览器vue插件中展示这个名称，否则会展示为<index>
   name: 'MenuComp',
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.el-menu-item {
+  --el-menu-base-level-padding: 14px;
+}
+.el-sub-menu {
+  --el-menu-base-level-padding: 14px;
+}
+</style>

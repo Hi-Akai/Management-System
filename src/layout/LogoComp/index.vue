@@ -6,6 +6,11 @@
 </template>
 
 <script setup lang="ts"></script>
+<script lang="ts">
+export default {
+  name: 'LogoComp',
+}
+</script>
 
 <style scoped lang="scss">
 .logo {
@@ -17,8 +22,8 @@
   padding: 10px;
 
   img {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
   }
 
   p {

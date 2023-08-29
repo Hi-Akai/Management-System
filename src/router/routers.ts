@@ -10,11 +10,10 @@ export const constantRoute = [
   },
   {
     path: '/', //主页
-    component: () => import('@/layout/index.vue'),
+    component: () => import('@/layout/index.vue'), //外面包了一层，页面主要展示菜单栏，在其中一部分区域展示children的内容
     name: 'Layout',
     meta: {
       title: '',
-      hidden: false,
       icon: '',
     },
     redirect: '/home',
@@ -24,7 +23,6 @@ export const constantRoute = [
         component: () => import('@/views/home/index.vue'),
         meta: {
           title: '首页',
-          hidden: false,
           icon: 'HomeFilled',
         },
       },
@@ -36,7 +34,6 @@ export const constantRoute = [
     name: 'Screen', //命名路由
     meta: {
       title: '数据大屏',
-      hidden: false,
       icon: 'Platform',
     },
   },
@@ -46,7 +43,6 @@ export const constantRoute = [
     name: 'Acl',
     meta: {
       title: '权限管理',
-      hidden: false,
       icon: 'HelpFilled',
     },
     redirect: '/acl/user',
@@ -76,6 +72,54 @@ export const constantRoute = [
         meta: {
           title: '菜单管理',
           icon: 'Menu',
+        },
+      },
+    ],
+  },
+  {
+    path: '/product', //产品管理
+    component: () => import('@/layout/index.vue'),
+    name: 'product',
+    meta: {
+      title: '产品管理',
+      icon: 'Shop',
+    },
+    redirect: '/product/trademark',
+    children: [
+      {
+        path: '/product/trademark',
+        component: () => import('@/views/product/trademark/index.vue'),
+        name: 'Trademark',
+        meta: {
+          title: '品牌管理',
+          icon: 'TrendCharts',
+        },
+      },
+      {
+        path: '/product/sku',
+        component: () => import('@/views/product/sku/index.vue'),
+        name: 'Sku',
+        meta: {
+          title: 'SKU管理',
+          icon: 'List',
+        },
+      },
+      {
+        path: '/product/spu',
+        component: () => import('@/views/product/spu/index.vue'),
+        name: 'Spu',
+        meta: {
+          title: 'SPU管理',
+          icon: 'GoodsFilled',
+        },
+      },
+      {
+        path: '/product/attr',
+        component: () => import('@/views/product/attr/index.vue'),
+        name: 'Attr',
+        meta: {
+          title: '属性管理',
+          icon: 'Briefcase',
         },
       },
     ],
