@@ -1,9 +1,9 @@
 //用户相关小仓库
 import { defineStore } from 'pinia'
-import { reqLogin } from '@/api/user/index'
+import { reqLogin, reqUserInfo } from '@/api/user/index'
 import type { loginForm, loginRes } from '@/api/user/type'
 import type { UserState } from './types/type'
-import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
+import { SET_TOKEN, GET_TOKEN, DEL_TOKEN } from '@/utils/token'
 import { constantRoute } from '@/router/routers'
 
 const useUserStore = defineStore('User', {
@@ -11,6 +11,8 @@ const useUserStore = defineStore('User', {
     return {
       token: GET_TOKEN(),
       menuRoutes: constantRoute, //仓库存储生成菜单需要的数组（路由）
+      username: '',
+      avatar: '',
     }
   },
   actions: {
@@ -25,6 +27,21 @@ const useUserStore = defineStore('User', {
       } else {
         return Promise.reject(new Error(result.data.message))
       }
+    },
+    //获取用户信息,存入到仓库中
+    async getUserInfo() {
+      const result = await reqUserInfo()
+      if (result.code == 200) {
+        this.username = result.data.checkUser.username
+        this.avatar = result.data.checkUser.avatar
+      }
+    },
+    //用户登出
+    async userLogout() {
+      this.token = ''
+      this.username = ''
+      this.avatar = ''
+      DEL_TOKEN()
     },
   },
   getters: {},

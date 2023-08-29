@@ -12,5 +12,4 @@ enum API {
 export const reqLogin = (data: loginForm) =>
   request.post<any, loginRes>(API['USER_LOGIN'], data)
 //获取用户信息方法
-export const reqUserInfo = () =>
-  request.post<any, userInfoRes>(API['USER_INFO'])
+export const reqUserInfo = () => request.get<any, userInfoRes>(API['USER_INFO'])

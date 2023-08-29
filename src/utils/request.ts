@@ -1,4 +1,5 @@
 // 进行axios的二次封装：使用请求和响应拦截器
+import useUserStore from '@/store/modules/user'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 //创建axios实例
@@ -10,6 +11,11 @@ const request = axios.create({
 //请求拦截器
 request.interceptors.request.use((config) => {
   // config配置对象，headers属性请求头，经常给服务器端携带公共参数
+  //获取用户仓库中的token
+  const userState = useUserStore()
+  if (userState.token) {
+    config.headers.token = userState.token
+  }
   return config
 })
 //响应拦截器

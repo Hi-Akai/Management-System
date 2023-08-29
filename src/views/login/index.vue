@@ -80,13 +80,14 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ElNotification } from 'element-plus'
 //引入用户相关的小仓库
 import useUserStore from '@/store/modules/user'
 import { getTime } from '@/utils/time'
 const userStore = useUserStore()
 const $router = useRouter()
+const $route = useRoute()
 const loginData = ref({
   username: 'kaikai',
   password: '123123',
@@ -139,7 +140,9 @@ const submitForm = async (type: string) => {
               : `${getTime()}好，欢迎`,
         })
         loading.value = false
-        $router.push({ path: '/' })
+        //判断登陆的时候，路由路径中是否带有query参数，如果有，就往该路径跳转，否则跳转主页（使用场景：用户临时退出登陆，没有关闭页面，而后再次登陆，就能回到之前退出的那个菜单）
+        const redirect: any = $route.query.redirect
+        $router.push({ path: redirect || '/' })
       } catch (err) {
         loading.value = false
         ElNotification({
