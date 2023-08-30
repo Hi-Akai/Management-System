@@ -124,13 +124,16 @@ const validatePass2 = (_rule: any, value: any, callback: any) => {
 const submitForm = async (type: string) => {
   const formEl = type == 'login' ? loginForm.value : registerForm.value
   if (!formEl) return
-  await formEl.validate((valid: any) => {
+  await formEl.validate(async (valid: any) => {
     if (valid) {
       try {
         loading.value = true
-        userStore.userLogin(
+        await userStore.userLogin(
           type == 'login' ? loginData.value : registerData.value,
         )
+        //判断登陆的时候，路由路径中是否带有query参数，如果有，就往该路径跳转，否则跳转主页（使用场景：用户临时退出登陆，没有关闭页面，而后再次登陆，就能回到之前退出的那个菜单）
+        const redirect: any = $route.query.redirect
+        $router.push({ path: redirect || '/' })
         ElNotification({
           type: 'success',
           title: type == 'login' ? '登录成功' : '注册成功！',
@@ -140,9 +143,6 @@ const submitForm = async (type: string) => {
               : `${getTime()}好，欢迎`,
         })
         loading.value = false
-        //判断登陆的时候，路由路径中是否带有query参数，如果有，就往该路径跳转，否则跳转主页（使用场景：用户临时退出登陆，没有关闭页面，而后再次登陆，就能回到之前退出的那个菜单）
-        const redirect: any = $route.query.redirect
-        $router.push({ path: redirect || '/' })
       } catch (err) {
         loading.value = false
         ElNotification({
