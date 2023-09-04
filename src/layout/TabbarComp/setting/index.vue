@@ -48,8 +48,8 @@ const fullScreen = () => {
  * 2.清空用户仓库中关于用户的信息
  * 3.跳转到登录页面
  */
-const logout = () => {
-  userStore.userLogout()
+const logout = async () => {
+  await userStore.userLogout()
   $router.push({ path: '/login', query: { redirect: $route.path } })
 }
 </script>

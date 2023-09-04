@@ -14,7 +14,7 @@ request.interceptors.request.use((config) => {
   //获取用户仓库中的token
   const userState = useUserStore()
   if (userState.token) {
-    config.headers.token = userState.token
+    config.headers.Authorization = userState.token
   }
   return config
 })

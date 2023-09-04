@@ -42,7 +42,6 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     }
   } else {
     //如果是登录页面
-    console.log(to.path, from.path)
     if (to.path == '/login') {
       next()
     } else {

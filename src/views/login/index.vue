@@ -106,8 +106,8 @@ let registerForm = ref()
 const validatePass = (_rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('账号不能为空'))
-  } else if (!value.match(/^[a-zA-Z0-9]{6,10}$/)) {
-    callback(new Error('账号必须为6-10位字母或数字'))
+    // } else if (!value.match(/^[a-zA-Z0-9]{6,10}$/)) {
+    //   callback(new Error('账号必须为6-10位字母或数字'))
   } else {
     callback()
   }
@@ -115,8 +115,8 @@ const validatePass = (_rule: any, value: any, callback: any) => {
 const validatePass2 = (_rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('密码不能为空'))
-  } else if (!value.match(/^[a-zA-Z0-9]{6,10}$/)) {
-    callback(new Error('密码必须为6-10位字母或数字'))
+    // } else if (!value.match(/^[a-zA-Z0-9]{6,10}$/)) {
+    //   callback(new Error('密码必须为6-10位字母或数字'))
   } else {
     callback()
   }
@@ -147,7 +147,6 @@ const submitForm = async (type: string) => {
         loading.value = false
         ElNotification({
           type: 'error',
-          title: type == 'login' ? '登录成功' : '注册成功！',
           message: (err as Error).message,
         })
       }
